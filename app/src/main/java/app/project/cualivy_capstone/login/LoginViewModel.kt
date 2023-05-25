@@ -4,14 +4,20 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import app.project.cualivy_capstone.api.ApiConfig
+import app.project.cualivy_capstone.preference.UserPreference
 import app.project.cualivy_capstone.response.Login
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginViewModel:ViewModel() {
+class LoginViewModel(private val pref: UserPreference) : ViewModel() {
+
+    private val _login = MutableLiveData<Login>()
+    val login: LiveData<Login> = _login
 
     private val _error = MutableLiveData(true)
     val error: LiveData<Boolean> = _error
@@ -55,5 +61,17 @@ class LoginViewModel:ViewModel() {
                 Log.e(TAG, "onFailure: ${t.message}")
             }
         })
+    }
+
+    fun login() {
+        viewModelScope.launch {
+            pref.login()
+        }
+    }
+
+    fun saveUser(user: Login) {
+        viewModelScope.launch {
+            pref.saveUser(user)
+        }
     }
 }

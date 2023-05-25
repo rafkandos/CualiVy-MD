@@ -7,8 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
-import app.project.cualivy_capstone.MainActivity
-import app.project.cualivy_capstone.R
 import app.project.cualivy_capstone.databinding.ActivityGalleryPreviewBinding
 
 class GalleryPreviewActivity : AppCompatActivity() {

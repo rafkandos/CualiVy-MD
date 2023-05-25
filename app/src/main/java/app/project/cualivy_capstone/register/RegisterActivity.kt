@@ -93,9 +93,14 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.signupButton.setOnClickListener {
+            val guid = toString()
             val fullname = binding.nameEditText.text.toString()
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
+            val token = toString()
+            val createdat = toString()
+            val updatedat = toString()
+
 
 
             when {
@@ -109,11 +114,11 @@ class RegisterActivity : AppCompatActivity() {
                     binding.passwordEditText.error = getString(R.string.empty_password)
                 }
                 password.length < 8 -> {
-                    binding.passwordEditText.error = getString(R.string.invalid_password)
-                }
+                  binding.passwordEditText.error = getString(R.string.invalid_password)
+               }
                 else -> {
 
-                    registerViewModel.register(fullname, email, password)
+                    registerViewModel.register(guid, fullname, email, password, token, createdat, updatedat)
                 }
             }
         }

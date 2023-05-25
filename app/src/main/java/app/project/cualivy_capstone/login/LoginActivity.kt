@@ -1,5 +1,6 @@
 package app.project.cualivy_capstone.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -10,10 +11,19 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import app.project.cualivy_capstone.MainActivity
 import app.project.cualivy_capstone.R
+import app.project.cualivy_capstone.ViewModelFactory
 import app.project.cualivy_capstone.databinding.ActivityLoginBinding
+import app.project.cualivy_capstone.preference.UserPreference
 import app.project.cualivy_capstone.register.RegisterActivity
+import app.project.cualivy_capstone.response.Login
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginViewModel: LoginViewModel
@@ -49,13 +59,39 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupViewModel() {
         loginViewModel = ViewModelProvider(
-            this
+            this,
+            ViewModelFactory(UserPreference.getInstance(dataStore))
         )[LoginViewModel::class.java]
 
         loginViewModel.error.observe(this) { error ->
-            loginViewModel.message.observe(this) {
+            loginViewModel.message.observe(this) { message ->
+                if (!error) {
+                    loginViewModel.login.observe(this) { loginResult ->
+                        val status = loginResult.status
+                        val message = loginResult.message
+                        val data = loginResult.data
+
+                        loginViewModel.saveUser(Login(status, message, data, true))
+                        loginViewModel.login()
+                    }
                     val builder = AlertDialog.Builder(this)
                     builder.setTitle(getString(R.string.login))
+                    builder.setMessage(message)
+                    val alertDialog: AlertDialog = builder.create()
+                    alertDialog.setCancelable(false)
+                    alertDialog.show()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        alertDialog.dismiss()
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
+                        finish()
+                    }, 2000L)
+                } else {
+                    val builder = AlertDialog.Builder(this)
+                    builder.setTitle(getString(R.string.login))
+                    builder.setMessage(message)
                     val alertDialog: AlertDialog = builder.create()
                     alertDialog.setCancelable(false)
                     alertDialog.show()
@@ -63,13 +99,38 @@ class LoginActivity : AppCompatActivity() {
                         alertDialog.dismiss()
                     }, 2000L)
                 }
-
+            }
         }
 
         loginViewModel.isLoading.observe(this) {
             showLoading(it)
         }
     }
+
+
+//    private fun setupViewModel() {
+//        loginViewModel = ViewModelProvider(
+//            this
+//        )[LoginViewModel::class.java]
+//
+//        loginViewModel.error.observe(this) { error ->
+//            loginViewModel.message.observe(this) {
+//                    val builder = AlertDialog.Builder(this)
+//                    builder.setTitle(getString(R.string.login))
+//                    val alertDialog: AlertDialog = builder.create()
+//                    alertDialog.setCancelable(false)
+//                    alertDialog.show()
+//                    Handler(Looper.getMainLooper()).postDelayed({
+//                        alertDialog.dismiss()
+//                    }, 2000L)
+//                }
+//
+//        }
+//
+//        loginViewModel.isLoading.observe(this) {
+//            showLoading(it)
+//        }
+//    }
 
     private fun setupAction() {
         binding.loginButton.setOnClickListener {
@@ -83,8 +144,8 @@ class LoginActivity : AppCompatActivity() {
                     binding.passwordEditText.error = getString(R.string.empty_password)
                 }
                 password.length < 8 -> {
-                    binding.passwordEditText.error = getString(R.string.invalid_password)
-                }
+                   binding.passwordEditText.error = getString(R.string.invalid_password)
+               }
                 else -> {
                     loginViewModel.login(email, password)
                 }

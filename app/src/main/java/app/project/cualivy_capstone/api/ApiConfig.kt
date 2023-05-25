@@ -23,8 +23,4 @@ class ApiConfig {
             return retrofit.create(ApiServices::class.java)
         }
     }
-   object BuildConfig {
-      const val BASE_URL = "http://34.124.223.74/"}
-
-
 }
