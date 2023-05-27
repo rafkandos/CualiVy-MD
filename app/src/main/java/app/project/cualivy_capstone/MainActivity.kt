@@ -8,6 +8,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
@@ -75,16 +76,18 @@ class MainActivity : AppCompatActivity() {
 //        }
 
         mainViewModel.getUser().observe(this) { user ->
-            if (user.isLogin) {
-//                mainViewModel.getAllStories(user.token, 2, 5)
-//                mainViewModel.stories.observe(this) {
-//                    adapter = StoryAdapter(it)
-//                    binding.rvUser.adapter = adapter
-//                }
-            } else {
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-            }
+
+//            Log.d("WOYAKNO", "Value of myVariable: " + user.message)
+//            if (user.isLogin) {
+////                mainViewModel.getAllStories(user.token, 2, 5)
+////                mainViewModel.stories.observe(this) {
+////                    adapter = StoryAdapter(it)
+////                    binding.rvUser.adapter = adapter
+////                }
+//            } else {
+//                val intent = Intent(this, LoginActivity::class.java)
+//                startActivity(intent)
+//            }
         }
     }
 

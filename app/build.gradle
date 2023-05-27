@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "app.project.cualivy_capstone"
-        buildConfigField ("String", "BASE_URL", "\"http://34.124.223.74/api/Auth\"")
+        buildConfigField ("String", "BASE_URL", "\"http://34.124.223.74/api/Auth/\"")
         minSdk 21
         targetSdk 33
         versionCode 1
