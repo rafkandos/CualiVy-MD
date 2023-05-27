@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import app.project.cualivy_capstone.response.Login
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.util.Objects
 
 class UserPreference private constructor(private val dataStore: DataStore<Preferences>) {
 
@@ -17,7 +18,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
             Login(
                 preferences[STATUS_KEY] ?: 0,
                 preferences[MESSAGE_KEY] ?: "",
-                preferences[DATA_KEY] ?: "",
+                preferences[DATA_KEY] ?: object : Any() {},
                 preferences[STATE_KEY] ?: false
             )
         }
@@ -27,7 +28,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         dataStore.edit { preferences ->
             preferences[STATUS_KEY] = user.status
             preferences[MESSAGE_KEY] = user.message
-            preferences[DATA_KEY] = user.data
+            preferences[DATA_KEY] = user.data.toString()
             preferences[STATE_KEY] = user.isLogin
         }
     }

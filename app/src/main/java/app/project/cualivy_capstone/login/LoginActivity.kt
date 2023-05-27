@@ -65,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
 
         loginViewModel.error.observe(this) { error ->
             loginViewModel.message.observe(this) { message ->
-                if (!error) {
+                if (message == "Success") {
                     loginViewModel.login.observe(this) { loginResult ->
                         val status = loginResult.status
                         val message = loginResult.message
@@ -147,7 +147,14 @@ class LoginActivity : AppCompatActivity() {
                    binding.passwordEditText.error = getString(R.string.invalid_password)
                }
                 else -> {
-                    loginViewModel.login(email, password)
+//                    loginViewModel.login(email, password)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
+                        finish()
+                    }, 2000L)
                 }
             }
         }

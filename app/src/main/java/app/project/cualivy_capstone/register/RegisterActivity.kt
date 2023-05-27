@@ -55,7 +55,7 @@ class RegisterActivity : AppCompatActivity() {
 
         registerViewModel.error.observe(this) { error ->
             registerViewModel.message.observe(this) { message ->
-                if (!error) {
+                if (message == "Created") {
 
                     val builder = AlertDialog.Builder(this)
                     builder.setTitle(getString(R.string.register))
