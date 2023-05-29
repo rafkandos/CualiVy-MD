@@ -4,28 +4,30 @@
     package="app.project.cualivy_capstone">
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
 
-
     <application
         android:allowBackup="true"
-        android:usesCleartextTraffic="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Cualivy_Capstone"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".recyclerview.ListJobActivity"
+            android:exported="false" />
+        <activity
             android:name=".login.LoginActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".register.RegisterActivity"
             android:exported="false" />

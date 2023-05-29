@@ -12,6 +12,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import app.project.cualivy_capstone.MainActivity
 import app.project.cualivy_capstone.databinding.ActivityCameraPreviewBinding
+import app.project.cualivy_capstone.recyclerview.ListJobActivity
 
 
 class CameraPreviewActivity : AppCompatActivity() {
@@ -35,6 +36,9 @@ class CameraPreviewActivity : AppCompatActivity() {
         }**/
 
         binding.btnRescan.setOnClickListener { Rescan() }
+        binding.btnProcess.setOnClickListener {
+            startActivity(Intent(this, ListJobActivity::class.java))
+        }
 
         setupView()
     }

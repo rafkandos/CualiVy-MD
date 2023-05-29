@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
 import app.project.cualivy_capstone.databinding.ActivityGalleryPreviewBinding
+import app.project.cualivy_capstone.recyclerview.ListJobActivity
 
 class GalleryPreviewActivity : AppCompatActivity() {
 
@@ -25,6 +26,9 @@ class GalleryPreviewActivity : AppCompatActivity() {
         setupView()
 
         binding.btnGalleryAgain.setOnClickListener { galleryAgain() }
+        binding.btnProcess.setOnClickListener {
+            startActivity(Intent(this, ListJobActivity::class.java))
+        }
     }
 
     private fun setupView() {
