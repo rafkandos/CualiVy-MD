@@ -108,29 +108,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-//    private fun setupViewModel() {
-//        loginViewModel = ViewModelProvider(
-//            this
-//        )[LoginViewModel::class.java]
-//
-//        loginViewModel.error.observe(this) { error ->
-//            loginViewModel.message.observe(this) {
-//                    val builder = AlertDialog.Builder(this)
-//                    builder.setTitle(getString(R.string.login))
-//                    val alertDialog: AlertDialog = builder.create()
-//                    alertDialog.setCancelable(false)
-//                    alertDialog.show()
-//                    Handler(Looper.getMainLooper()).postDelayed({
-//                        alertDialog.dismiss()
-//                    }, 2000L)
-//                }
-//
-//        }
-//
-//        loginViewModel.isLoading.observe(this) {
-//            showLoading(it)
-//        }
-//    }
 
     private fun setupAction() {
         binding.loginButton.setOnClickListener {

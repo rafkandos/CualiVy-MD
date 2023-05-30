@@ -1,6 +1,7 @@
 package app.project.cualivy_capstone.api
 
 
+import app.project.cualivy_capstone.response.Detail
 import app.project.cualivy_capstone.response.Login
 import app.project.cualivy_capstone.response.Register
 import retrofit2.Call
@@ -30,5 +31,11 @@ interface ApiServices {
         @Field("email") email: String,
         @Field("password") password: String
     ): Call<Login>
+
+    @FormUrlEncoded
+    @POST("detail")
+    fun detail(
+        @Field("guid") guid: String
+    ): Call<Detail>
 
 }

@@ -75,10 +75,12 @@ class MainActivity : AppCompatActivity() {
 //            showLoading(it)
 //        }
 
-        mainViewModel.getUser().observe(this) { user ->
-
-//            Log.d("WOYAKNO", "Value of myVariable: " + user.message)
+//        mainViewModel.getUser().observe(this) { user ->
+//
+//            //Log.d("WOYAKNO", "Value of myVariable: " + user.message)
 //            if (user.isLogin) {
+//                val intent = Intent(this, MainActivity::class.java)
+//                startActivity(intent)
 ////                mainViewModel.getAllStories(user.token, 2, 5)
 ////                mainViewModel.stories.observe(this) {
 ////                    adapter = StoryAdapter(it)
@@ -88,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 //                val intent = Intent(this, LoginActivity::class.java)
 //                startActivity(intent)
 //            }
-        }
+//        }
     }
 
 

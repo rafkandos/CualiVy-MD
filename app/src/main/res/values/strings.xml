@@ -38,4 +38,5 @@
     <string name="empty_email">Enter Email</string>
     <string name="empty_name">Enter Name</string>
     <string name="empty_password">Enter Password</string>
+    <string name="list_job">List Job</string>
 </resources>

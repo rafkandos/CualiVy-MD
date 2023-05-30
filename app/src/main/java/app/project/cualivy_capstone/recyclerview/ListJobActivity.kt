@@ -1,5 +1,6 @@
 package app.project.cualivy_capstone.recyclerview
 
+
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -11,17 +12,19 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import app.project.cualivy_capstone.R
 import app.project.cualivy_capstone.adapter.JobAdapter
 import app.project.cualivy_capstone.databinding.ActivityListJobBinding
+import app.project.cualivy_capstone.response.Detail
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
 import org.json.JSONObject
 
-class ListJobActivity : AppCompatActivity() {
+class ListJobActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityListJobBinding
+    private lateinit var adapter: JobAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +43,22 @@ class ListJobActivity : AppCompatActivity() {
             startActivity(Intent(this, ListJobActivity::class.java))
         }
 
+//        val listJob = ArrayList<String>()
+//        adapter = JobAdapter(listJob)
+        //adapter.notifyDataSetChanged()
+
+//        adapter.setOnItemClickCallback(object : JobAdapter. OnItemClickCallback {
+//            override fun onItemClicked(data: Detail) {
+//                Intent(this@ListJobActivity, DetailActivity::class.java).also {
+//                    intent.putExtra(DetailActivity.EXTRA_URL, "https://www.dicoding.com/")
+//                    startActivity(intent)
+//                }
+//            }
+//        })
 
     }
+
+
 
     private fun setupView() {
         @Suppress("DEPRECATION")
@@ -106,8 +123,16 @@ class ListJobActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = ListJobActivity::class.java.simpleName
+        const val EXTRA_URL = "extra_url"
     }
 
+
+//    override fun onItemClicked(data: Detail) {
+//        Intent(this@ListJobActivity, DetailActivity::class.java).also {
+//            intent.putExtra(DetailActivity.EXTRA_URL, "https://www.dicoding.com/")
+//            startActivity(intent)
+//        }
+//    }
 
 
 }

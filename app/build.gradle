@@ -71,5 +71,5 @@ dependencies {
     implementation "androidx.camera:camera-view:1.2.3"
 
     //parsingJson
-    implementation 'com.loopj.android:android-async-http:1.4.9'
+    implementation 'com.loopj.android:android-async-http:1.4.10'
 }
