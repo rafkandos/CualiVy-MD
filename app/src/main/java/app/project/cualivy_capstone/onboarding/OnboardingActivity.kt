@@ -1,29 +1,31 @@
-package app.project.cualivy_capstone.splash
+package app.project.cualivy_capstone.onboarding
 
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.WindowInsets
 import android.view.WindowManager
 import app.project.cualivy_capstone.MainActivity
 import app.project.cualivy_capstone.R
-import app.project.cualivy_capstone.onboarding.OnboardingActivity
+import app.project.cualivy_capstone.databinding.ActivityCameraPreviewBinding
+import app.project.cualivy_capstone.databinding.ActivityOnboardingBinding
 
-class SplashActivity : AppCompatActivity() {
+class OnboardingActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityOnboardingBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        binding = ActivityOnboardingBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.btnStarted.setOnClickListener {
+            val intent = Intent(this@OnboardingActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         setupView()
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, OnboardingActivity::class.java))
-
-            finish()
-        }, SPLASH_TIME_OUT)
     }
 
     private fun setupView() {
@@ -37,9 +39,5 @@ class SplashActivity : AppCompatActivity() {
             )
         }
         supportActionBar?.hide()
-    }
-
-    companion object {
-        private const val SPLASH_TIME_OUT = 3000L
     }
 }

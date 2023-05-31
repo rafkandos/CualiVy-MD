@@ -30,7 +30,7 @@
     <string name="login_failed">"Login failed"</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
-    <string name="name">Name</string>
+    <string name="name">Fullname</string>
     <string name="welcome_back">Welcome Back</string>
     <string name="happy_to_see_you">We happy to see you again. To use your account, you should sign in first.</string>
     <string name="please_fill">Please fill the form to continue.</string>
@@ -39,4 +39,10 @@
     <string name="empty_name">Enter Name</string>
     <string name="empty_password">Enter Password</string>
     <string name="list_job">List Job</string>
+    <string name="related_jobs">Related Jobs</string>
+    <string name="keterangan">This related job for your CV, Good Luck.</string>
+    <string name="submit_your_resume">Submit your Resume</string>
+    <string name="connect">We will connect with available job vacancy</string>
+    <string name="started">Get Started</string>
+    <string name="wait">Wait, we will process your CV</string>
 </resources>

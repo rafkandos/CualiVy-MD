@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
 import app.project.cualivy_capstone.databinding.ActivityGalleryPreviewBinding
+import app.project.cualivy_capstone.process.ProcessActivity
 import app.project.cualivy_capstone.recyclerview.ListJobActivity
 
 class GalleryPreviewActivity : AppCompatActivity() {
@@ -27,7 +28,7 @@ class GalleryPreviewActivity : AppCompatActivity() {
 
         binding.btnGalleryAgain.setOnClickListener { galleryAgain() }
         binding.btnProcess.setOnClickListener {
-            startActivity(Intent(this, ListJobActivity::class.java))
+            startActivity(Intent(this, ProcessActivity::class.java))
         }
     }
 
@@ -50,6 +51,7 @@ class GalleryPreviewActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, GALLERY_REQUEST_CODE)
+
 
     }
 

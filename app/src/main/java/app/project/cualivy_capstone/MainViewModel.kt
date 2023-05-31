@@ -10,8 +10,8 @@ import app.project.cualivy_capstone.response.Login
 import kotlinx.coroutines.launch
 
 class MainViewModel (private val pref: UserPreference): ViewModel() {
-   // private val _isLoading = MutableLiveData<Boolean>()
-   // val isLoading: LiveData<Boolean> = _isLoading
+//    private val _isLoading = MutableLiveData<Boolean>()
+//    val isLoading: LiveData<Boolean> = _isLoading
 
     fun getUser(): LiveData<Login> {
         return pref.getUser().asLiveData()

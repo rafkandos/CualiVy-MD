@@ -8,7 +8,6 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
@@ -17,10 +16,10 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import app.project.cualivy_capstone.databinding.ActivityMainBinding
-import app.project.cualivy_capstone.login.LoginActivity
 import app.project.cualivy_capstone.preference.UserPreference
 import app.project.cualivy_capstone.preview.CameraPreviewActivity
 import app.project.cualivy_capstone.preview.GalleryPreviewActivity
+
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -28,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel : MainViewModel
+    private lateinit var pref : UserPreference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,19 +76,14 @@ class MainActivity : AppCompatActivity() {
 //        }
 
 //        mainViewModel.getUser().observe(this) { user ->
-//
-//            //Log.d("WOYAKNO", "Value of myVariable: " + user.message)
 //            if (user.isLogin) {
 //                val intent = Intent(this, MainActivity::class.java)
 //                startActivity(intent)
-////                mainViewModel.getAllStories(user.token, 2, 5)
-////                mainViewModel.stories.observe(this) {
-////                    adapter = StoryAdapter(it)
-////                    binding.rvUser.adapter = adapter
-////                }
+//                finish()
 //            } else {
 //                val intent = Intent(this, LoginActivity::class.java)
 //                startActivity(intent)
+//                finish()
 //            }
 //        }
     }

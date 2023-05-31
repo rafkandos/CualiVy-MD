@@ -124,7 +124,7 @@ class LoginActivity : AppCompatActivity() {
                    binding.passwordEditText.error = getString(R.string.invalid_password)
                }
                 else -> {
-//                    loginViewModel.login(email, password)
+                  loginViewModel.login(email, password)
                     Handler(Looper.getMainLooper()).postDelayed({
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         intent.flags =

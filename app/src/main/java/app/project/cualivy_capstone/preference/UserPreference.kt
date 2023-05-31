@@ -19,7 +19,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
                 preferences[STATUS_KEY] ?: 0,
                 preferences[MESSAGE_KEY] ?: "",
                 preferences[DATA_KEY] ?: object : Any() {},
-                preferences[STATE_KEY] ?: false
+                preferences[LOGIN_KEY] ?: false
             )
         }
     }
@@ -29,13 +29,13 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
             preferences[STATUS_KEY] = user.status
             preferences[MESSAGE_KEY] = user.message
             preferences[DATA_KEY] = user.data.toString()
-            preferences[STATE_KEY] = user.isLogin
+            preferences[LOGIN_KEY] = user.isLogin
         }
     }
 
     suspend fun login() {
         dataStore.edit { preferences ->
-            preferences[STATE_KEY] = true
+            preferences[LOGIN_KEY] = true
         }
     }
 
@@ -46,7 +46,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         private val STATUS_KEY = intPreferencesKey("status")
         private val MESSAGE_KEY = stringPreferencesKey("message")
         private val DATA_KEY = stringPreferencesKey("data")
-        private val STATE_KEY = booleanPreferencesKey("state")
+        private val LOGIN_KEY = booleanPreferencesKey("state")
 
         fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
             return INSTANCE ?: synchronized(this) {
