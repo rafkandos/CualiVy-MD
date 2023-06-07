@@ -10,6 +10,7 @@ import app.project.cualivy_capstone.MainActivity
 import app.project.cualivy_capstone.R
 import app.project.cualivy_capstone.databinding.ActivityCameraPreviewBinding
 import app.project.cualivy_capstone.databinding.ActivityOnboardingBinding
+import app.project.cualivy_capstone.login.LoginActivity
 
 class OnboardingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOnboardingBinding

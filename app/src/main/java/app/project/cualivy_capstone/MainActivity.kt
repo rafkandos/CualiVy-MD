@@ -16,6 +16,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import app.project.cualivy_capstone.databinding.ActivityMainBinding
+import app.project.cualivy_capstone.login.LoginActivity
 import app.project.cualivy_capstone.preference.UserPreference
 import app.project.cualivy_capstone.preview.CameraPreviewActivity
 import app.project.cualivy_capstone.preview.GalleryPreviewActivity

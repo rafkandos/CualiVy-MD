@@ -7,9 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.util.Base64
 import app.project.cualivy_capstone.databinding.ActivityGalleryPreviewBinding
 import app.project.cualivy_capstone.process.ProcessActivity
-import app.project.cualivy_capstone.recyclerview.ListJobActivity
+import java.io.ByteArrayOutputStream
 
 class GalleryPreviewActivity : AppCompatActivity() {
 
@@ -28,7 +29,10 @@ class GalleryPreviewActivity : AppCompatActivity() {
 
         binding.btnGalleryAgain.setOnClickListener { galleryAgain() }
         binding.btnProcess.setOnClickListener {
-            startActivity(Intent(this, ProcessActivity::class.java))
+            val imageData = imageUri?.let { it1 -> getImageData(it1) }
+            val base64Image = Base64.encodeToString(imageData, Base64.DEFAULT)
+            intent.putExtra("base64Image", base64Image)
+            startActivity(Intent(this,ProcessActivity::class.java))
         }
     }
 
@@ -51,25 +55,36 @@ class GalleryPreviewActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, GALLERY_REQUEST_CODE)
-
-
     }
 
-    @Suppress("DEPRECATION")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
-            val imageUri = data?.data
+//    @Suppress("DEPRECATION")
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
+//            val imageUri = data?.data
+//
+//            val intent = Intent(this, GalleryPreviewActivity::class.java)
+//            intent.putExtra("imageUri", imageUri)
+//            startActivity(intent)
+//            finish()
+//        }
+//    }
 
-            val intent = Intent(this, GalleryPreviewActivity::class.java)
-            intent.putExtra("imageUri", imageUri)
-            startActivity(intent)
-            finish()
+    private fun getImageData(imageUri: Uri): ByteArray {
+        val inputStream = imageUri.let { contentResolver.openInputStream(it) }
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        val buffer = ByteArray(1024)
+        var bytesRead: Int
+        if (inputStream != null) {
+            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                byteArrayOutputStream.write(buffer, 0, bytesRead)
+            }
         }
+        return byteArrayOutputStream.toByteArray()
     }
-
 
     companion object {
         const val GALLERY_REQUEST_CODE = 100
     }
 }
+
