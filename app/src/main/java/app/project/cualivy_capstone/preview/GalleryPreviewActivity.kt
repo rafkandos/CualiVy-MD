@@ -10,6 +10,7 @@ import android.view.WindowManager
 import android.util.Base64
 import app.project.cualivy_capstone.databinding.ActivityGalleryPreviewBinding
 import app.project.cualivy_capstone.process.ProcessActivity
+import app.project.cualivy_capstone.recyclerview.ListJobActivity
 import java.io.ByteArrayOutputStream
 
 class GalleryPreviewActivity : AppCompatActivity() {

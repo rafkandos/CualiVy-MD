@@ -74,8 +74,10 @@ class ListJobActivity : AppCompatActivity() {
 //    }
 
     private fun getListJob(base64Image: String) {
-        viewModel.isLoading.observe(this,
-            { isLoading ->
+
+
+        viewModel.isLoading.observe(this, { isLoading ->
+
             if (isLoading) {
                 binding.progressBar.visibility = View.VISIBLE
             } else {
