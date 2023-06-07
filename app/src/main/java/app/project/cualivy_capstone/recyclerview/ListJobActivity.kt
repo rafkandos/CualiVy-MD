@@ -1,67 +1,60 @@
 package app.project.cualivy_capstone.recyclerview
 
-
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.util.Base64
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.project.cualivy_capstone.adapter.JobAdapter
 import app.project.cualivy_capstone.databinding.ActivityListJobBinding
-import app.project.cualivy_capstone.response.Detail
-import com.loopj.android.http.AsyncHttpClient
-import com.loopj.android.http.AsyncHttpResponseHandler
-import cz.msebera.android.httpclient.Header
-import org.json.JSONObject
+import app.project.cualivy_capstone.detail.DetailActivity
+import app.project.cualivy_capstone.preference.PreferenceManager
+import java.util.*
 
-class ListJobActivity : AppCompatActivity(){
+@Suppress("DEPRECATION")
+class ListJobActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityListJobBinding
-    private lateinit var adapter: JobAdapter
-
+    private var base64Image: String? = null
+    private val viewModel: ListJobViewModel by viewModels()
+    private lateinit var preferenceManager: PreferenceManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityListJobBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        preferenceManager = PreferenceManager.getInstance(this)
+
+        val imageUri = intent.getParcelableExtra<Uri>("base64Image")
+
+        if (imageUri != null) {
+//            base64Image = convertUriToBase64(imageUri)
+            getListJob("base64Image")
+        }
+
         val layoutManager = LinearLayoutManager(this)
-        binding.listJob.setLayoutManager(layoutManager)
+        binding.listJob.layoutManager = layoutManager
         val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
         binding.listJob.addItemDecoration(itemDecoration)
 
-        getListJob()
         setupView()
 
-        binding.listJob.setOnClickListener {
-            startActivity(Intent(this, ListJobActivity::class.java))
-        }
-
-//        val listJob = ArrayList<String>()
-//        adapter = JobAdapter(listJob)
-        //adapter.notifyDataSetChanged()
-
-//        adapter.setOnItemClickCallback(object : JobAdapter. OnItemClickCallback {
-//            override fun onItemClicked(data: Detail) {
-//                Intent(this@ListJobActivity, DetailActivity::class.java).also {
-//                    intent.putExtra(DetailActivity.EXTRA_URL, "https://www.dicoding.com/")
-//                    startActivity(intent)
-//                }
-//            }
-//        })
-
+//        binding.listJob.setOnClickListener {
+//            startActivity(Intent(this, DetailActivity::class.java))
+//        }
+//
+//        base64Image?.let { getListJob(it) }
     }
 
-
-
     private fun setupView() {
-        @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {
@@ -73,66 +66,37 @@ class ListJobActivity : AppCompatActivity(){
         supportActionBar?.hide()
     }
 
+//    private fun convertUriToBase64(uri: Uri): String {
+//        val inputStream = contentResolver.openInputStream(uri)
+//        val byteArray = inputStream?.readBytes()
+//        inputStream?.close()
+//        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+//    }
 
-    private fun getListJob() {
-        binding.progressBar.visibility = View.VISIBLE
-        val client = AsyncHttpClient()
-        val url = "http://34.124.223.74/api/Job/get10"
-        client.get(url, object : AsyncHttpResponseHandler() {
-
-            override fun onSuccess(statusCode: Int, headers: Array<Header>, responseBody: ByteArray) {
-                // Jika koneksi berhasil
+    private fun getListJob(base64Image: String) {
+        viewModel.isLoading.observe(this, { isLoading ->
+            if (isLoading) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
                 binding.progressBar.visibility = View.INVISIBLE
-
-                val listJob = ArrayList<String>()
-                val result = String(responseBody)
-                Log.d(TAG, result)
-                try {
-                    val jsonArray = JSONObject(result).getJSONArray("data")
-                    //val jsonArray = JSONArray(result)
-                    for (i in 0 until jsonArray.length()) {
-                        val jsonObject = jsonArray.getJSONObject(i)
-                        val position= jsonObject.getString("position")
-                        val company= jsonObject.getString("companyname")
-                        val location = jsonObject.getString("location")
-                        val notes = jsonObject.getString("notes")
-                        val thirdparty = jsonObject.getString("thirdparty")
-                        listJob.add("$position\n -$company\n -$location\n - $notes\n  -$thirdparty\n")
-                    }
-                    val adapter = JobAdapter(listJob)
-                    binding.listJob.adapter = adapter
-                } catch (e: Exception) {
-                    Toast.makeText(this@ListJobActivity, e.message, Toast.LENGTH_SHORT).show()
-                    e.printStackTrace()
-                }
             }
+        })
 
-            override fun onFailure(statusCode: Int, headers: Array<Header>, responseBody: ByteArray, error: Throwable) {
-                // Jika koneksi gagal
-                binding.progressBar.visibility = View.INVISIBLE
-                val errorMessage = when (statusCode) {
-                    401 -> "$statusCode : Bad Request"
-                    403 -> "$statusCode : Forbidden"
-                    404 -> "$statusCode : Not Found"
-                    else -> "$statusCode : ${error.message}"
-                }
-                Toast.makeText(this@ListJobActivity, errorMessage, Toast.LENGTH_SHORT).show()
-            }
+        val position = preferenceManager.getPosition()
+        val company = preferenceManager.getCompany()
+        val location = preferenceManager.getLocation()
+        val notes = preferenceManager.getNotes()
+        val thirdparty = preferenceManager.getThirdParty()
+
+        viewModel.getListJob(position, company, location, notes, thirdparty)
+
+        viewModel.listJob.observe(this, { listJob ->
+            val adapter = JobAdapter(listJob as ArrayList<String>)
+            binding.listJob.adapter = adapter
         })
     }
 
     companion object {
         private val TAG = ListJobActivity::class.java.simpleName
-        const val EXTRA_URL = "extra_url"
     }
-
-
-//    override fun onItemClicked(data: Detail) {
-//        Intent(this@ListJobActivity, DetailActivity::class.java).also {
-//            intent.putExtra(DetailActivity.EXTRA_URL, "https://www.dicoding.com/")
-//            startActivity(intent)
-//        }
-//    }
-
-
 }

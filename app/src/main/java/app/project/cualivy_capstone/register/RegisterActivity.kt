@@ -98,8 +98,8 @@ class RegisterActivity : AppCompatActivity() {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
             val token = toString()
-            val createdat = toString()
-            val updatedat = toString()
+//            val createdat = toString()
+//            val updatedat = toString()
 
 
 
@@ -118,7 +118,7 @@ class RegisterActivity : AppCompatActivity() {
                }
                 else -> {
 
-                    registerViewModel.register(guid, fullname, email, password, token, createdat, updatedat)
+                    registerViewModel.register(guid, fullname, email, password, token)
                 }
             }
         }
