@@ -19,12 +19,12 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        webView = findViewById(R.id.webView)
+        //webView = findViewById(R.id.webView)
 
-        val url = intent.getStringExtra(EXTRA_URL)
-        url?.let {
-            loadWebView(url)
-        }
+//        val url = intent.getStringExtra(EXTRA_URL)
+//        url?.let {
+//            loadWebView(url)
+//        }
 
         setupView()
     }
@@ -42,13 +42,13 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    private fun loadWebView(url: String) {
-        webView.loadUrl(url)
-    }
-
-    companion object {
-        const val EXTRA_URL = "extra_url"
-    }
+//    private fun loadWebView(url: String) {
+//        webView.loadUrl(url)
+//    }
+//
+//    companion object {
+//        const val EXTRA_URL = "extra_url"
+//    }
 }
 
 

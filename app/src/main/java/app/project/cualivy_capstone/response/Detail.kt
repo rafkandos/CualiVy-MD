@@ -11,7 +11,7 @@ data class Detail(
     val message: String,
 
     @field:SerializedName("data")
-    val data: Any,
+    val data: String,
 
     @field:SerializedName("totaldata")
     val totaldata: Int,

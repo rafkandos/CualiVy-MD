@@ -45,4 +45,6 @@
     <string name="connect">We will connect with available job vacancy</string>
     <string name="started">Get Started</string>
     <string name="wait">Wait, we will process your CV</string>
+    <string name="apply">Apply Now</string>
+    <string name="setting">Setting</string>
 </resources>

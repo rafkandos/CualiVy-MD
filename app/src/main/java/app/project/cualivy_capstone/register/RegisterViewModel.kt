@@ -26,9 +26,9 @@ class RegisterViewModel:ViewModel() {
         private val TAG = RegisterViewModel::class.java.simpleName
     }
 
-    fun register( guid: String, fullname: String, email: String, password: String, token: String, createdat:String, updatedat : String) {
+    fun register( guid: String, fullname: String, email: String, password: String, token: String) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService().register(guid, fullname, email, password, token, createdat, updatedat)
+        val client = ApiConfig.getApiService().register(guid, fullname, email, password, token)
         client.enqueue(object : Callback<Register> {
             override fun onResponse(
                 call: Call<Register>,

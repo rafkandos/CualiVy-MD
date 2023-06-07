@@ -19,9 +19,7 @@ interface ApiServices {
         @Field("fullname") fullname: String,
         @Field("email") email: String,
         @Field("password") password: String,
-        @Field("token") token: String,
-        @Field("createdat") createdat: String,
-        @Field("updatedat") updatedat: String
+        @Field("token") token: String
 
     ): Call<Register>
 
@@ -36,6 +34,16 @@ interface ApiServices {
     @POST("detail")
     fun detail(
         @Field("guid") guid: String
+    ): Call<Detail>
+
+    @FormUrlEncoded
+    @POST("SearchJob")
+    fun searchJob(
+        @Field("position") position : String,
+        @Field("company") company : String,
+        @Field("location") location : String,
+        @Field("notes") notes : String,
+        @Field("thirdparty") thirdparty : String
     ): Call<Detail>
 
 }

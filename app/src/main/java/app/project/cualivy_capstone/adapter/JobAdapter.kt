@@ -37,8 +37,8 @@ class JobAdapter(private val listReview: ArrayList<String>) : RecyclerView.Adapt
            // intent.putExtra(DetailActivity.EXTRA_NAME, "dicoding.com")
            // val jobId = position + 1
             //val url = "https://www.dicoding.com/$jobId"
-            val url = "https://www.dicoding.com/"
-            intent.putExtra(DetailActivity.EXTRA_URL, url)
+//            val url = "https://www.dicoding.com/"
+//            intent.putExtra(DetailActivity.EXTRA_URL, url)
             holder.itemView.context.startActivity(intent)
 
         }
