@@ -2,6 +2,7 @@ package app.project.cualivy_capstone.api
 
 
 import app.project.cualivy_capstone.response.Detail
+import app.project.cualivy_capstone.response.JobResponse
 import app.project.cualivy_capstone.response.Login
 import app.project.cualivy_capstone.response.Register
 import retrofit2.Call
@@ -43,7 +44,8 @@ interface ApiServices {
         @Field("company") company : String,
         @Field("location") location : String,
         @Field("notes") notes : String,
-        @Field("thirdparty") thirdparty : String
-    ): Call<Detail>
+        @Field("thirdparty") thirdparty : String,
+        @Field("image") image : String
+    ): Call<JobResponse>
 
 }

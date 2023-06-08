@@ -14,13 +14,15 @@ import app.project.cualivy_capstone.detail.DetailActivity
 import app.project.cualivy_capstone.response.Detail
 
 
-class JobAdapter(private val listReview: ArrayList<String>) : RecyclerView.Adapter<JobAdapter.ViewHolder>() {
+class JobAdapter(private val listJob: ArrayList<String>) : RecyclerView.Adapter<JobAdapter.ViewHolder>() {
 
 //    private var onItemClickCallback: OnItemClickCallback? = null
 //
 //    fun setOnItemClickCallback (onItemClickCallback: OnItemClickCallback){
 //        this.onItemClickCallback = onItemClickCallback
 //    }
+
+    private var onItemClickListener: ((Int) -> Unit)? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,26 +33,34 @@ class JobAdapter(private val listReview: ArrayList<String>) : RecyclerView.Adapt
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        holder.tvItem.text = listReview[position]
+        holder.bind(listJob[position])
         holder.itemView.setOnClickListener {
-            val intent = Intent(holder.itemView.context, DetailActivity::class.java)
-           // intent.putExtra(DetailActivity.EXTRA_NAME, "dicoding.com")
-           // val jobId = position + 1
-            //val url = "https://www.dicoding.com/$jobId"
-//            val url = "https://www.dicoding.com/"
-//            intent.putExtra(DetailActivity.EXTRA_URL, url)
-            holder.itemView.context.startActivity(intent)
-
+            onItemClickListener?.invoke(position)
         }
+
+//        holder.tvItem.text = listReview[position]
+//        holder.itemView.setOnClickListener {
+//            val intent = Intent(holder.itemView.context, DetailActivity::class.java)
+//           // intent.putExtra(DetailActivity.EXTRA_NAME, "dicoding.com")
+//           // val jobId = position + 1
+//            //val url = "https://www.dicoding.com/$jobId"
+////            val url = "https://www.dicoding.com/"
+////            intent.putExtra(DetailActivity.EXTRA_URL, url)
+//            holder.itemView.context.startActivity(intent)
+//
+//        }
     }
 
     override fun getItemCount(): Int {
-        return listReview.size
+        return listJob.size
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvItem: TextView = view.findViewById(R.id.tvItem)
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val tvItem: TextView = view.findViewById(R.id.tvItem)
 
+        fun bind(job: String) {
+            tvItem.text = job
+        }
     }
 
 //        fun bind(item: String) {

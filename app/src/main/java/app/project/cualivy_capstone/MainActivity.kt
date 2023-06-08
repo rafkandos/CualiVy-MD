@@ -1,57 +1,65 @@
 package app.project.cualivy_capstone
 
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import app.project.cualivy_capstone.databinding.ActivityMainBinding
 import app.project.cualivy_capstone.login.LoginActivity
+import app.project.cualivy_capstone.preference.PreferenceManager
 import app.project.cualivy_capstone.preference.UserPreference
 import app.project.cualivy_capstone.preview.CameraPreviewActivity
 import app.project.cualivy_capstone.preview.GalleryPreviewActivity
 
 
+
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var mainViewModel : MainViewModel
-    private lateinit var pref : UserPreference
+    private lateinit var mainViewModel: MainViewModel
+    private lateinit var pref : PreferenceManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         binding.btnGallery.setOnClickListener {
             openGallery()
         }
 
         binding.btnCamera.setOnClickListener {
-            startCamera()
+            checkCameraPermission()
         }
+
+
+
 
         setupView()
         setupViewModel()
         loginCheck()
     }
 
-
     private fun setupView() {
-        @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {
@@ -64,53 +72,56 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
+        val pref = PreferenceManager.getInstance(this)
         mainViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(UserPreference.getInstance(dataStore))
-        )[MainViewModel::class.java]
+            ViewModelFactory(pref)
+        ).get(MainViewModel::class.java)
     }
 
     private fun loginCheck() {
 
-//        mainViewModel.isLoading.observe(this) {
-//            showLoading(it)
-//        }
-
-//        mainViewModel.getUser().observe(this) { user ->
-//            if (user.isLogin) {
-//                val intent = Intent(this, MainActivity::class.java)
-//                startActivity(intent)
-//                finish()
-//            } else {
-//                val intent = Intent(this, LoginActivity::class.java)
-//                startActivity(intent)
-//                finish()
-//            }
+//        if (mainViewModel.getUser() != null) {
+//            // User is logged in, proceed to MainActivity
+//            // ...
+//        } else {
+//            // User is not logged in, redirect to LoginActivity
+//            startActivity(Intent(this, LoginActivity::class.java))
+//            finish()
 //        }
     }
 
+    private fun checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CAMERA),
+                CAMERA_PERMISSION_REQUEST_CODE
+            )
+        } else {
+            startCamera()
+        }
+    }
 
-    @Suppress("DEPRECATION")
     private fun startCamera() {
-        // Open camera to take picture
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (intent.resolveActivity(packageManager) != null) {
             startActivityForResult(intent, CAMERA_REQUEST_CODE)
         } else {
             Toast.makeText(this, "Camera not available", Toast.LENGTH_SHORT).show()
         }
-
     }
 
-    @Suppress("DEPRECATION")
     private fun openGallery() {
-        // Open gallery to choose image
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, GALLERY_REQUEST_CODE)
     }
 
-    @Suppress("DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -120,8 +131,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, CameraPreviewActivity::class.java)
             intent.putExtra("imageBitmap", imageBitmap)
             startActivity(intent)
-
-            //binding.ivUpload.setImageBitmap(imageBitmap)
         } else if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
             val imageUri = data?.data
 
@@ -129,13 +138,31 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("imageUri", imageUri)
             startActivity(intent)
         }
+    }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startCamera()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Camera permission denied. Cannot access camera.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
     companion object {
-        const val GALLERY_REQUEST_CODE = 100
+        private const val GALLERY_REQUEST_CODE = 100
         const val CAMERA_REQUEST_CODE = 200
+        private const val CAMERA_PERMISSION_REQUEST_CODE = 300
     }
-
-
 }

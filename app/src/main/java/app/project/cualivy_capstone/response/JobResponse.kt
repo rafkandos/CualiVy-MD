@@ -1,19 +1,14 @@
 package app.project.cualivy_capstone.response
 
-
 import com.google.gson.annotations.SerializedName
 
-data class Login(
-
+data class JobResponse(
     @field:SerializedName("status")
-    val status: Int,
+    val status: Int? = null,
 
     @field:SerializedName("message")
-    val message: String,
+    val message: String? = null,
 
     @field:SerializedName("data")
-    val data: List<Token>,
-
-    @field:SerializedName("totaldata")
-   val totaldata : Int
+    val data: List<DataItem>? = null
 )

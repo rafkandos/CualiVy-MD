@@ -11,6 +11,7 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.startActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -19,15 +20,16 @@ import app.project.cualivy_capstone.MainActivity
 import app.project.cualivy_capstone.R
 import app.project.cualivy_capstone.ViewModelFactory
 import app.project.cualivy_capstone.databinding.ActivityLoginBinding
-import app.project.cualivy_capstone.preference.UserPreference
+import app.project.cualivy_capstone.preference.PreferenceManager
 import app.project.cualivy_capstone.register.RegisterActivity
 import app.project.cualivy_capstone.response.Login
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+//private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var pref: PreferenceManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,20 +60,24 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
+        val pref = PreferenceManager.getInstance(this)
         loginViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(UserPreference.getInstance(dataStore))
-        )[LoginViewModel::class.java]
+                    ViewModelFactory(pref)
+        ).get(LoginViewModel::class.java)
 
         loginViewModel.error.observe(this) { error ->
             loginViewModel.message.observe(this) { message ->
                 if (!error) {
+
                     loginViewModel.login.observe(this) { loginResult ->
                         val status = loginResult.status
                         val message = loginResult.message
                         val data = loginResult.data
+                        val totalData = loginResult.totaldata
 
-                        loginViewModel.saveUser(Login(status, message, data, true))
+                        val user = Login(status, message, data, totalData)
+                        loginViewModel.saveUser(user)
                         loginViewModel.login()
                     }
                     val builder = AlertDialog.Builder(this)

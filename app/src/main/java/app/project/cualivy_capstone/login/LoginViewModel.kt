@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.project.cualivy_capstone.api.ApiConfig
+import app.project.cualivy_capstone.preference.PreferenceManager
 import app.project.cualivy_capstone.preference.UserPreference
 import app.project.cualivy_capstone.response.Login
 import kotlinx.coroutines.launch
@@ -14,7 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginViewModel(private val pref: UserPreference) : ViewModel() {
+class LoginViewModel(private val pref: PreferenceManager) : ViewModel() {
 
     private val _login = MutableLiveData<Login>()
     val login: LiveData<Login> = _login
@@ -65,7 +66,7 @@ class LoginViewModel(private val pref: UserPreference) : ViewModel() {
 
     fun login() {
         viewModelScope.launch {
-            pref.login()
+            pref.getUser()
         }
     }
 
