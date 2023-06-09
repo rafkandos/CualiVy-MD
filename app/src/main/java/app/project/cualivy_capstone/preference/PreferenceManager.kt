@@ -2,6 +2,8 @@ package app.project.cualivy_capstone.preference
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.lifecycle.ViewModelProvider.NewInstanceFactory.Companion.instance
+import app.project.cualivy_capstone.response.Detail
 import app.project.cualivy_capstone.response.Login
 import app.project.cualivy_capstone.response.Token
 import com.google.gson.Gson
@@ -13,7 +15,6 @@ class PreferenceManager private constructor(context: Context) {
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     private val gson = Gson()
-
 
     fun getUser(): Flow<Login> = flow {
         val status = sharedPreferences.getInt(STATUS_KEY, 0)
@@ -27,8 +28,6 @@ class PreferenceManager private constructor(context: Context) {
 
         emit(Login(status, message, data, totalData))
     }
-
-
 
     fun saveUser(user: Login) {
         sharedPreferences.edit().apply {
@@ -63,13 +62,13 @@ class PreferenceManager private constructor(context: Context) {
         private const val TOTAL_DATA = "totaldata"
         private const val KEY_BASE64_IMAGE = "base64Image"
         private const val KEY_TOKEN = "token"
-
+        private const val KEY_GUID = "guid"
         private var instance: PreferenceManager? = null
-
-
+        private lateinit var sharedPreferences: SharedPreferences
+        private lateinit var gson: Gson
 
         fun saveBase64Image(context: Context, base64Image: String) {
-            val sharedPreferences =
+            sharedPreferences =
                 context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
             sharedPreferences.edit().apply {
                 putString(KEY_BASE64_IMAGE, base64Image)
@@ -77,7 +76,7 @@ class PreferenceManager private constructor(context: Context) {
         }
 
         fun getBase64Image(context: Context): String? {
-            val sharedPreferences =
+            sharedPreferences =
                 context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
             return sharedPreferences.getString(KEY_BASE64_IMAGE, null)
         }
@@ -85,8 +84,22 @@ class PreferenceManager private constructor(context: Context) {
         fun getInstance(context: Context): PreferenceManager {
             if (instance == null) {
                 instance = PreferenceManager(context.applicationContext)
+                sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                gson = Gson()
             }
             return instance as PreferenceManager
+        }
+
+        fun getGuid(): Detail? {
+            val guidJson = sharedPreferences.getString(KEY_GUID, null)
+            return gson.fromJson(guidJson, Detail::class.java)
+        }
+
+        fun saveGuid(guid: Detail) {
+            val guidJson = gson.toJson(guid)
+            sharedPreferences.edit().apply {
+                putString(KEY_GUID, guidJson)
+            }.apply()
         }
     }
 }

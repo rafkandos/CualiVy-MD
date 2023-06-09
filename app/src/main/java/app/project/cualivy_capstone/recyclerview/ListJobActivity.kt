@@ -14,6 +14,7 @@ import app.project.cualivy_capstone.adapter.JobAdapter
 import app.project.cualivy_capstone.databinding.ActivityListJobBinding
 import app.project.cualivy_capstone.detail.DetailActivity
 import app.project.cualivy_capstone.preference.PreferenceManager
+import app.project.cualivy_capstone.response.Detail
 
 
 @Suppress("DEPRECATION")
@@ -22,6 +23,7 @@ class ListJobActivity : AppCompatActivity() {
     private lateinit var binding: ActivityListJobBinding
     private val viewModel: ListJobViewModel by viewModels()
     private lateinit var preferenceManager: PreferenceManager
+    private lateinit var jobAdapter: JobAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,15 +39,23 @@ class ListJobActivity : AppCompatActivity() {
 
         setupView()
 
+
+//        jobAdapter = JobAdapter(ArrayList())
+//        binding.listJob.adapter = jobAdapter
+//
+//        jobAdapter.setOnItemClickListener { guid ->
+//
+//            navigateToDetailJob(Detail("guid"))
+//        }
+
         binding.listJob.setOnClickListener {
             startActivity(Intent(this, DetailActivity::class.java))
         }
 
 
-
         val base64Image = PreferenceManager.getBase64Image(this)
         if (base64Image != null) {
-            getListJob()
+            getListJob(base64Image)
         }
 
     }
@@ -62,7 +72,7 @@ class ListJobActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    private fun getListJob() {
+    private fun getListJob(base64Image: String) {
         viewModel.isLoading.observe(this) { isLoading ->
             if (isLoading) {
                 binding.progressBar.visibility = View.VISIBLE
@@ -70,22 +80,18 @@ class ListJobActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.INVISIBLE
             }
         }
-        viewModel.getListJob()
+        viewModel.getListJob(base64Image)
         viewModel.listJob.observe(this) { listJob ->
             val adapter = JobAdapter(listJob)
             binding.listJob.adapter = adapter
-        }
 
+        }
     }
 
-//    private fun getJob(listJob: ArrayList<String>) {
-//        val adapter = JobAdapter(listJob)
-//        binding.listJob.adapter = adapter
-//
-////        adapter.setOnItemClickListener { position ->
-////            val intent = Intent(this, DetailActivity::class.java)
-////            intent.putExtra(DetailActivity.EXTRA_POSITION, position)
-////            startActivity(intent)
-//        }
+//    private fun navigateToDetailJob(guid: Detail) {
+//        preferenceManager.saveGuid(guid)
+//        val intent = Intent(this, DetailActivity::class.java)
+//        startActivity(intent)
+//    }
     }
 
