@@ -1,9 +1,12 @@
-
 package app.project.cualivy_capstone.detail
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.Html
+import android.text.Spanned
 import android.util.Log
 import android.view.View
 import android.view.WindowInsets
@@ -13,12 +16,13 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import app.project.cualivy_capstone.ApplyActivity
+import app.project.cualivy_capstone.MainActivity
 import app.project.cualivy_capstone.R
-import app.project.cualivy_capstone.adapter.JobAdapter
 import app.project.cualivy_capstone.databinding.ActivityDetailBinding
-import app.project.cualivy_capstone.databinding.ActivityListJobBinding
 import app.project.cualivy_capstone.preference.PreferenceManager
-import app.project.cualivy_capstone.recyclerview.ListJobViewModel
+import app.project.cualivy_capstone.response.JobData
+import com.bumptech.glide.Glide
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import com.loopj.android.http.RequestParams
@@ -26,14 +30,11 @@ import cz.msebera.android.httpclient.Header
 import org.json.JSONException
 import org.json.JSONObject
 
-
 @Suppress("DEPRECATION")
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
-    private val viewModel: DetailViewModel by viewModels()
     private lateinit var preferenceManager: PreferenceManager
-    private lateinit var webView: WebView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,24 +43,16 @@ class DetailActivity : AppCompatActivity() {
 
         preferenceManager = PreferenceManager.getInstance(this)
 
-//        val url = intent.getStringExtra("listJob")
-//        val url = PreferenceManager.getGuid(this)
-//        url?.let {
-//            getDetail(url)
-//        }
-
         val guid = PreferenceManager.getGuid()
         if (guid != null) {
-            getDetail(guid. guid)
+            getDetail(guid.guid)
         }
 
-
-//        val url = intent.getStringExtra(EXTRA_URL)
-//        url?.let {
-////            loadWebView(url)
-//            getDetail("guid")
-//        }
         setupView()
+
+//        binding.btnApply.setOnClickListener {
+//            getApply()
+//        }
     }
 
     private fun setupView() {
@@ -74,21 +67,23 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-
     private fun getDetail(guid: String) {
+        binding.progressBar.visibility = View.VISIBLE
         val client = AsyncHttpClient()
         val url = "http://34.124.223.74/api/Job/Detail/$guid"
-        val params = RequestParams()
-        params.put("guid", guid)
+//        val params = RequestParams()
+//        params.put("guid", guid)
 
-        client.get(url, params,  object : AsyncHttpResponseHandler() {
+//        Toast.makeText(this@DetailActivity, "uhuyyy: $guid", Toast.LENGTH_SHORT).show()
+
+        client.get(url, object : AsyncHttpResponseHandler() {
 
             override fun onSuccess(
                 statusCode: Int,
                 headers: Array<Header>,
                 responseBody: ByteArray
             ) {
-                val listJob = ArrayList<String>()
+                binding.progressBar.visibility = View.INVISIBLE
                 val result = String(responseBody)
                 Log.d(TAG, result)
                 try {
@@ -101,17 +96,74 @@ class DetailActivity : AppCompatActivity() {
                     val education = jsonObject.getString("education")
                     val major = jsonObject.getString("major")
                     val description = jsonObject.getString("description")
-                    val minimumYears = jsonObject.getString("minimumyears")
+                    val minimumYears = jsonObject.getInt("minimumyears")
                     val skills = jsonObject.getString("skills")
                     val link = jsonObject.getString("link")
                     val notes = jsonObject.getString("notes")
                     val thirdParty = jsonObject.getString("thirdparty")
                     val image = jsonObject.getString("image")
 
-                    listJob.add("$guid\n - $kindOfWork-$position\n - $companyName\n - $location\n - $education\n -$major\n - $description\n - $minimumYears\n - $skills - $link - $notes\n  -$thirdParty\n-$image")
+                    val detailText = """
+                        $guid
+                        - $kindOfWork - $position
+                        - $companyName
+                        - $location
+                        - $education
+                        - $major
+                        - $description
+                        - $minimumYears
+                        - $skills
+                        - $link
+                        - $notes
+                        - $thirdParty
+                        - $image
+                    """.trimIndent()
+
+                    binding.tvKind.text = kindOfWork
+                    binding.tvPosition.text = position
+                    binding.tvCompany.text = companyName
+                    binding.tvLocation.text = location
+                    binding.tvEducation.text = "Qualification : " + " " + education
+                    binding.tvMajor.text = major
+                    binding.tvSkills.text = skills
+                    binding.tvNotes.text = "Job Type : " + " " + notes
+                    binding.tvThirdparty.text = thirdParty
+
+                    binding.btnApply.setOnClickListener {
+                        val url = link
+                        val intent = Intent(Intent.ACTION_VIEW)
+                        intent.data = Uri.parse(url)
+                        startActivity(intent)
+                    }
+
+                    val rawHtmlText = description
+                    val desc = binding.tvDescription
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        desc.text = Html.fromHtml(rawHtmlText, Html.FROM_HTML_MODE_COMPACT)
+                    } else {
+                        @Suppress("DEPRECATION")
+                        desc.text = Html.fromHtml(rawHtmlText) as Spanned
+                    }
+
+//                    val htmlText = "<b>Hello</b> <i>World</i>"
+//
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                        binding.tvDescription.text = Html.fromHtml(htmlText, Html.FROM_HTML_MODE_COMPACT)
+//                    } else {
+//                        @Suppress("DEPRECATION")
+//                        binding.tvDescription.text = Html.fromHtml(htmlText)
+//                    }
+
+
+
+
 
                     // Tampilkan data pada view
-                    binding.tvDetail.text = listJob.joinToString("\n")
+//                    binding.tvDetail.text = detailText
+                    Glide.with(this@DetailActivity)
+                        .load(image)
+                        .into(binding.imageUser)
 
                 } catch (e: JSONException) {
                     Toast.makeText(this@DetailActivity, "Error parsing JSON", Toast.LENGTH_SHORT).show()
@@ -125,6 +177,8 @@ class DetailActivity : AppCompatActivity() {
                 responseBody: ByteArray?,
                 error: Throwable?
             ) {
+
+                binding.progressBar.visibility = View.INVISIBLE
                 // Jika koneksi gagal
                 if (error != null) {
                     Toast.makeText(this@DetailActivity, "$statusCode : ${error.message}", Toast.LENGTH_SHORT).show()
@@ -133,33 +187,15 @@ class DetailActivity : AppCompatActivity() {
         })
     }
 
-    companion object {
-        private const val TAG = "DetailActivity"
-        const val EXTRA_URL = "extra_url"
+    private fun getApply(){
+        val intent = Intent(this@DetailActivity, ApplyActivity::class.java)
+        PreferenceManager.saveLink(JobData("", ""))
+        startActivity(intent)
     }
 
-//    private fun loadWebView(url: String) {
-//        webView.loadUrl(url)
-//    }
-//
-//    companion object {
-//        const val EXTRA_NAME = "extra_name"
-//        const val EXTRA_URL = "extra_url"
-//    }
+
+    companion object {
+        const val TAG = "DetailActivity"
+        const val EXTRA_URL = "extra_url"
+    }
 }
-
-
-
-//        viewModel.isLoading.observe(this) { isLoading ->
-//            if (isLoading) {
-//                binding.progressBar.visibility = View.VISIBLE
-//            } else {
-//                binding.progressBar.visibility = View.INVISIBLE
-//            }
-//        }
-//        viewModel.getListJob(url)
-//        viewModel.listJob.observe(this) { listJob ->
-//            val adapter = JobAdapter(listJob)
-//            binding.tvDetail.adapter = adapter
-//        }
-//    }

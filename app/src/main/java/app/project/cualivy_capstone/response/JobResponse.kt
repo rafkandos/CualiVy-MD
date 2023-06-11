@@ -12,3 +12,7 @@ data class JobResponse(
     @field:SerializedName("data")
     val data: List<DataItem>? = null
 )
+
+//data class ListJobResponse(
+//
+//)

@@ -4,7 +4,14 @@ import com.google.gson.annotations.SerializedName
 
 data class Detail(
 
-    @field:SerializedName("guid")
-    val guid : String
+    val status: Int,
+    val message: String,
+    val data: JobData,
+    val totalData: Int
 
 )
+
+data class JobData (
+    val guid: String,
+    val link: String
+        )

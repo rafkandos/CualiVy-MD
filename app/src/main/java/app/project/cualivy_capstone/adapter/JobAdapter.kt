@@ -11,6 +11,7 @@ import app.project.cualivy_capstone.R
 import app.project.cualivy_capstone.detail.DetailActivity
 import app.project.cualivy_capstone.preference.PreferenceManager
 import app.project.cualivy_capstone.response.Detail
+import app.project.cualivy_capstone.response.JobData
 
 
 class JobAdapter(private val listJob: ArrayList<String>) : RecyclerView.Adapter<JobAdapter.ViewHolder>() {
@@ -37,7 +38,7 @@ class JobAdapter(private val listJob: ArrayList<String>) : RecyclerView.Adapter<
 ////            val url = "https://www.dicoding.com/$jobId"
 //            val url = "https://www.dicoding.com/"
 //            intent.putExtra(DetailActivity.EXTRA_URL, "")
-            PreferenceManager.saveGuid(Detail("guid"))
+            PreferenceManager.saveGuid(JobData(job.substring(0, 36), ""))
             holder.itemView.context.startActivity(intent)
 
         }
@@ -56,6 +57,8 @@ class JobAdapter(private val listJob: ArrayList<String>) : RecyclerView.Adapter<
 
         fun bind(job: String) {
             tvItem.text = job
+
+
         }
     }
 }

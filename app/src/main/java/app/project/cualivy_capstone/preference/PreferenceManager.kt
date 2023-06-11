@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModelProvider.NewInstanceFactory.Companion.instance
 import app.project.cualivy_capstone.response.Detail
+import app.project.cualivy_capstone.response.JobData
 import app.project.cualivy_capstone.response.Login
 import app.project.cualivy_capstone.response.Token
 import com.google.gson.Gson
@@ -63,6 +64,18 @@ class PreferenceManager private constructor(context: Context) {
         private const val KEY_BASE64_IMAGE = "base64Image"
         private const val KEY_TOKEN = "token"
         private const val KEY_GUID = "guid"
+        private const val KEY_LINK = "link"
+        private const val POSITION = "position"
+        private const val KIND_OF_WORK = "kindofwork"
+        private const val COMPANY_NAME = "companyname"
+        private const val LOCATION = "location"
+        private const val EDUCATION = "education"
+        private const val MAJOR = "major"
+        private const val DESCRIPTION = "description"
+        private const val THIRD_PARTY = "thirdparty"
+        private const val NOTES = "notes"
+        private const val MINIMUM_YEARS = "minimumyears"
+
         private var instance: PreferenceManager? = null
         private lateinit var sharedPreferences: SharedPreferences
         private lateinit var gson: Gson
@@ -90,15 +103,53 @@ class PreferenceManager private constructor(context: Context) {
             return instance as PreferenceManager
         }
 
-        fun getGuid(): Detail? {
+//        fun getGuid(): JobData {
+//            val guidJson = sharedPreferences.getString(KEY_GUID, null)
+//            return gson.fromJson(guidJson, JobData::class.java)
+//        }
+
+//        fun getLink(): JobData {
+//            val linkJson = sharedPreferences.getString(KEY_LINK, null)
+//            return gson.fromJson(linkJson, JobData::class.java)
+//        }
+//        fun saveGuid(guid: JobData) {
+////            val guidJson = gson.toJson(guid)
+////            sharedPreferences.edit().apply {
+////                putString(KEY_GUID, guidJson)
+////            }.apply()
+//
+//            val editor = sharedPreferences.edit()
+//            editor.putString(KEY_GUID, guid.guid)
+//            editor.putString(KEY_LINK, guid.link)
+//        }
+//
+////        fun saveLink(guid: JobData) {
+////
+////            val editor = sharedPreferences.edit()
+////            editor.putString(KEY_LINK, guid.link)
+////        }
+
+        fun getGuid(): JobData? {
             val guidJson = sharedPreferences.getString(KEY_GUID, null)
-            return gson.fromJson(guidJson, Detail::class.java)
+            return gson.fromJson(guidJson, JobData::class.java)
         }
 
-        fun saveGuid(guid: Detail) {
+        fun getLink(): JobData? {
+            val linkJson = sharedPreferences.getString(KEY_LINK, null)
+            return gson.fromJson(linkJson, JobData::class.java)
+        }
+
+        fun saveGuid(guid: JobData) {
             val guidJson = gson.toJson(guid)
             sharedPreferences.edit().apply {
                 putString(KEY_GUID, guidJson)
+            }.apply()
+        }
+
+        fun saveLink(guid: JobData) {
+            val linkJson = gson.toJson(guid)
+            sharedPreferences.edit().apply {
+                putString(KEY_LINK, linkJson)
             }.apply()
         }
     }
