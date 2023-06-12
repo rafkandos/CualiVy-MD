@@ -1,5 +1,6 @@
 package app.project.cualivy_capstone.adapter
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +28,7 @@ class JobAdapter(private val listJob: ArrayList<JSONObject>) :
         return ViewHolder(view)
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val job = listJob[position]
         holder.bind(job)

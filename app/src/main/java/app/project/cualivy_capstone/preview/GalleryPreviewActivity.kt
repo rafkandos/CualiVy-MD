@@ -31,10 +31,10 @@ class GalleryPreviewActivity : AppCompatActivity() {
         binding.btnGalleryAgain.setOnClickListener { galleryAgain() }
         binding.btnProcess.setOnClickListener {
             val imageData = imageUri?.let { it1 -> getImageData(it1) }
-            val base64Image = Base64.encodeToString(imageData, Base64.DEFAULT)
+            val base64Image = imageData?.let { encodeImageToBase64(it) }
 
             // Simpan base64 string gambar ke SharedPreferences
-            PreferenceManager.saveBase64Image(this, base64Image)
+            PreferenceManager.saveBase64Image(this, base64Image ?: "")
             startActivity(Intent(this, ProcessActivity::class.java))
         }
     }
@@ -74,7 +74,7 @@ class GalleryPreviewActivity : AppCompatActivity() {
         }
     }
 
-    private fun getImageData(imageUri: Uri): ByteArray {
+    private fun getImageData(imageUri: Uri): ByteArray? {
         val inputStream = imageUri.let { contentResolver.openInputStream(it) }
         val byteArrayOutputStream = ByteArrayOutputStream()
         val buffer = ByteArray(1024)
@@ -95,5 +95,3 @@ class GalleryPreviewActivity : AppCompatActivity() {
         const val GALLERY_REQUEST_CODE = 100
     }
 }
-
-

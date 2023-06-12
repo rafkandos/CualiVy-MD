@@ -15,7 +15,7 @@
         android:layout_marginEnd="15dp"
         android:backgroundTint="@color/purple_300"
         app:cardCornerRadius="15dp"
-        app:cardElevation="8dp"
+        app:cardElevation="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,10 +24,8 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="85dp"
+            android:layout_margin="5dp"
             app:cardCornerRadius="15dp"
             app:cardElevation="8dp"
             app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +33,7 @@
             tools:layout_editor_absoluteX="8dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="391dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="10dp">
@@ -43,34 +41,33 @@
                 <LinearLayout
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:orientation="vertical">
 
 
                     <TextView
                         android:id="@+id/tvItem"
                         android:layout_width="223dp"
-                        android:layout_height="27dp"
+                        android:layout_height="20dp"
                         android:gravity="center_vertical"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         tools:text="@string/list_job" />
 
                     <TextView
                         android:id="@+id/tv_company"
                         android:layout_width="222dp"
-                        android:layout_height="23dp"
+                        android:layout_height="18dp"
                         android:gravity="center_vertical"
-                        android:textColor="@color/black"
+                        android:textSize="14sp"
                         tools:text="@string/list_job" />
 
                     <TextView
                         android:id="@+id/tv_location"
                         android:layout_width="222dp"
-                        android:layout_height="23dp"
+                        android:layout_height="18dp"
                         android:gravity="center_vertical"
-                        android:textColor="@color/black"
+                        android:textSize="14sp"
                         tools:text="@string/list_job" />
 
 
@@ -80,7 +77,7 @@
                     android:id="@+id/img_user"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="10dp"
                     app:layout_constraintBaseline_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

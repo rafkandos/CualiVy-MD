@@ -1,24 +1,25 @@
 package app.project.cualivy_capstone.preview
 
+import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Base64
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import app.project.cualivy_capstone.MainActivity
 import app.project.cualivy_capstone.databinding.ActivityCameraPreviewBinding
+import app.project.cualivy_capstone.preference.PreferenceManager
 import app.project.cualivy_capstone.process.ProcessActivity
-import app.project.cualivy_capstone.recyclerview.ListJobActivity
-
+import java.io.ByteArrayOutputStream
 
 class CameraPreviewActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityCameraPreviewBinding
+    private lateinit var binding: ActivityCameraPreviewBinding
 
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,15 +30,13 @@ class CameraPreviewActivity : AppCompatActivity() {
         val imageBitmap = intent.getParcelableExtra<Bitmap>("imageBitmap")
         binding.ivPreviewCamera.setImageBitmap(imageBitmap)
 
-        //val imageUri = intent.getParcelableExtra<Uri>("imageUri")
-        /**if (imageBitmap != null) {
-            binding.ivPreviewCamera.setImageBitmap(imageBitmap)
-        } else if (imageUri != null) {
-            binding.ivPreviewCamera.setImageURI(imageUri)
-        }**/
-
-        binding.btnRescan.setOnClickListener { Rescan() }
+        binding.btnRescan.setOnClickListener { rescan() }
         binding.btnProcess.setOnClickListener {
+            val imageData = imageBitmap?.let { getImageData(it) }
+            val base64Image = imageData?.let { encodeToBase64(it) }
+
+            // Simpan base64 string gambar ke SharedPreferences
+            base64Image?.let { PreferenceManager.saveBase64Image(this, it) }
             startActivity(Intent(this, ProcessActivity::class.java))
         }
 
@@ -58,7 +57,7 @@ class CameraPreviewActivity : AppCompatActivity() {
     }
 
     @Suppress("DEPRECATION")
-    private fun Rescan() {
+    private fun rescan() {
         // Open camera again to take picture
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (intent.resolveActivity(packageManager) != null) {
@@ -82,9 +81,19 @@ class CameraPreviewActivity : AppCompatActivity() {
 
         }
     }
-        companion object {
-        const val CAMERA_REQUEST_CODE = 200
+
+    private fun getImageData(imageBitmap: Bitmap): ByteArray {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        return byteArrayOutputStream.toByteArray()
     }
 
+    private fun encodeToBase64(byteArray: ByteArray): String {
+        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+    }
 
+    companion object {
+        const val CAMERA_REQUEST_CODE = 200
+    }
 }
+
