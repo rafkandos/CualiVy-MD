@@ -119,13 +119,13 @@ class DetailActivity : AppCompatActivity() {
                         - $image
                     """.trimIndent()
 
-                    binding.tvKind.text = kindOfWork
+                    binding.tvKind.text = "Kind of Work : " + " " + kindOfWork
                     binding.tvPosition.text = position
                     binding.tvCompany.text = companyName
                     binding.tvLocation.text = location
                     binding.tvEducation.text = "Qualification : " + " " + education
-                    binding.tvMajor.text = major
-                    binding.tvSkills.text = skills
+                    binding.tvMajor.text = "Major : " + " " + major
+                    binding.tvSkills.text = "Skills : " + " " + skills
                     binding.tvNotes.text = "Job Type : " + " " + notes
                     binding.tvThirdparty.text = thirdParty
 
