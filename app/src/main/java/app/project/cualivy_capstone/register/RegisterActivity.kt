@@ -93,15 +93,10 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.signupButton.setOnClickListener {
-            val guid = toString()
+
             val fullname = binding.nameEditText.text.toString()
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-            val token = toString()
-//            val createdat = toString()
-//            val updatedat = toString()
-
-
 
             when {
                 fullname.isEmpty() -> {
@@ -118,7 +113,7 @@ class RegisterActivity : AppCompatActivity() {
                }
                 else -> {
 
-                    registerViewModel.register(guid, fullname, email, password, token)
+                    registerViewModel.register(fullname, email, password)
                 }
             }
         }

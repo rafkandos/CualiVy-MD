@@ -3,8 +3,8 @@ package app.project.cualivy_capstone
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import app.project.cualivy_capstone.login.LoginViewModel
+import app.project.cualivy_capstone.main.MainViewModel
 import app.project.cualivy_capstone.preference.PreferenceManager
-import app.project.cualivy_capstone.preference.UserPreference
 import app.project.cualivy_capstone.register.RegisterViewModel
 
 class ViewModelFactory(private val pref : PreferenceManager) : ViewModelProvider.NewInstanceFactory() {

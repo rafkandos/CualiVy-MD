@@ -1,26 +1,25 @@
-package app.project.cualivy_capstone
+package app.project.cualivy_capstone.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import app.project.cualivy_capstone.preference.PreferenceManager
-import app.project.cualivy_capstone.preference.UserPreference
-import app.project.cualivy_capstone.response.Login
+import app.project.cualivy_capstone.response.Token
 import kotlinx.coroutines.launch
 
 class MainViewModel (private val pref:PreferenceManager): ViewModel() {
 //    private val _isLoading = MutableLiveData<Boolean>()
 //    val isLoading: LiveData<Boolean> = _isLoading
 
-    fun getUser(): String?{
+    fun getUser(): Token {
         return pref.getToken()
     }
 
-    fun login(user : Login) {
+    fun getLogout(){
+        return pref.logOut()
+    }
+    fun login(user : Token) {
         viewModelScope.launch {
-            pref.login(user)
+            pref.saveToken(user)
         }
     }
 

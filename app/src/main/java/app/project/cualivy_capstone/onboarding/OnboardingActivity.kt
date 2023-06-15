@@ -6,11 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
-import app.project.cualivy_capstone.MainActivity
-import app.project.cualivy_capstone.R
-import app.project.cualivy_capstone.databinding.ActivityCameraPreviewBinding
+import app.project.cualivy_capstone.main.MainActivity
 import app.project.cualivy_capstone.databinding.ActivityOnboardingBinding
-import app.project.cualivy_capstone.login.LoginActivity
 
 class OnboardingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOnboardingBinding

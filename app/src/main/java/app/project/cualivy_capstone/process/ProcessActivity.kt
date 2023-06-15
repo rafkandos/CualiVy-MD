@@ -21,7 +21,6 @@ class ProcessActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = (Intent(this, ListJobActivity::class.java))
             startActivity(intent)
-
             finish()
         }, SPLASH_TIME_OUT)
 

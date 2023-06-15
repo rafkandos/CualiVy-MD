@@ -1,6 +1,5 @@
 package app.project.cualivy_capstone.detail
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -11,21 +10,15 @@ import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import app.project.cualivy_capstone.ApplyActivity
-import app.project.cualivy_capstone.MainActivity
-import app.project.cualivy_capstone.R
 import app.project.cualivy_capstone.databinding.ActivityDetailBinding
 import app.project.cualivy_capstone.preference.PreferenceManager
 import app.project.cualivy_capstone.response.JobData
 import com.bumptech.glide.Glide
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
-import com.loopj.android.http.RequestParams
 import cz.msebera.android.httpclient.Header
 import org.json.JSONException
 import org.json.JSONObject
@@ -119,13 +112,13 @@ class DetailActivity : AppCompatActivity() {
                         - $image
                     """.trimIndent()
 
-                    binding.tvKind.text = kindOfWork
+                    binding.tvKind.text = "Kind of Work : " + " " + kindOfWork
                     binding.tvPosition.text = position
                     binding.tvCompany.text = companyName
                     binding.tvLocation.text = location
                     binding.tvEducation.text = "Qualification : " + " " + education
-                    binding.tvMajor.text = major
-                    binding.tvSkills.text = skills
+                    binding.tvMajor.text = "Major : " + " " + major
+                    binding.tvSkills.text = "Skills : " + " " + skills
                     binding.tvNotes.text = "Job Type : " + " " + notes
                     binding.tvThirdparty.text = thirdParty
 

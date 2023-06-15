@@ -50,7 +50,7 @@
             android:name=".preview.CameraPreviewActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".main.MainActivity"
             android:exported="true" />
         <activity
             android:name=".splash.SplashActivity"

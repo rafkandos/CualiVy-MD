@@ -1,6 +1,5 @@
 package app.project.cualivy_capstone.login
 
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -11,18 +10,15 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat.startActivity
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
-import app.project.cualivy_capstone.MainActivity
+import app.project.cualivy_capstone.main.MainActivity
+import app.project.cualivy_capstone.main.MainViewModel
 import app.project.cualivy_capstone.R
 import app.project.cualivy_capstone.ViewModelFactory
 import app.project.cualivy_capstone.databinding.ActivityLoginBinding
 import app.project.cualivy_capstone.preference.PreferenceManager
 import app.project.cualivy_capstone.register.RegisterActivity
-import app.project.cualivy_capstone.response.Login
+import app.project.cualivy_capstone.response.Token
 
 //private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -30,6 +26,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
     private lateinit var pref: PreferenceManager
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,15 +67,11 @@ class LoginActivity : AppCompatActivity() {
             loginViewModel.message.observe(this) { message ->
                 if (!error) {
 
-                    loginViewModel.login.observe(this) { loginResult ->
-                        val status = loginResult.status
-                        val message = loginResult.message
-                        val data = loginResult.data
-                        val totalData = loginResult.totaldata
+                    loginViewModel.login.observe(this) { token ->
+                        val token = token.token
 
-                        val user = Login(status, message, data, totalData)
-                        loginViewModel.saveUser(user)
-                        loginViewModel.login()
+                       mainViewModel.login(Token(token))
+
                     }
                     val builder = AlertDialog.Builder(this)
                     builder.setTitle(getString(R.string.login))
@@ -89,6 +82,8 @@ class LoginActivity : AppCompatActivity() {
                     Handler(Looper.getMainLooper()).postDelayed({
                         alertDialog.dismiss()
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
+//                        val token = Token("token" )
+//                        PreferenceManager.saveToken(token)
                         intent.flags =
                             Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         startActivity(intent)

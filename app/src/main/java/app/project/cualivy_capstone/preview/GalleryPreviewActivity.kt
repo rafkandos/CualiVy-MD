@@ -65,12 +65,13 @@ class GalleryPreviewActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
-            val imageUri = data?.data
+            val imageUri = data?.data as Uri
+            binding.ivPreviewGallery.setImageURI(imageUri)
 
-            val intent = Intent(this, GalleryPreviewActivity::class.java)
-            intent.putExtra("imageUri", imageUri)
-            startActivity(intent)
-            finish()
+//            val intent = Intent(this, GalleryPreviewActivity::class.java)
+//            intent.putExtra("imageUri", imageUri)
+//            startActivity(intent)
+//            finish()
         }
     }
 

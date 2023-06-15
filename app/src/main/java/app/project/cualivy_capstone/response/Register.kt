@@ -12,5 +12,8 @@ data class Register(
     val message: String,
 
     @field:SerializedName("data")
-    val data: String
+    val data: String,
+
+    @field:SerializedName("totaldata")
+    val totaldata : Int
 )

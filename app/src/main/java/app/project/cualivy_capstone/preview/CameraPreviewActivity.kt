@@ -1,6 +1,5 @@
 package app.project.cualivy_capstone.preview
 
-import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
@@ -11,7 +10,7 @@ import android.util.Base64
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
-import app.project.cualivy_capstone.MainActivity
+import app.project.cualivy_capstone.main.MainActivity
 import app.project.cualivy_capstone.databinding.ActivityCameraPreviewBinding
 import app.project.cualivy_capstone.preference.PreferenceManager
 import app.project.cualivy_capstone.process.ProcessActivity
@@ -96,4 +95,3 @@ class CameraPreviewActivity : AppCompatActivity() {
         const val CAMERA_REQUEST_CODE = 200
     }
 }
-

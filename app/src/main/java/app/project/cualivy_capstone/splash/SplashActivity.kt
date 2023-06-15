@@ -8,7 +8,6 @@ import android.os.Handler
 import android.os.Looper
 import android.view.WindowInsets
 import android.view.WindowManager
-import app.project.cualivy_capstone.MainActivity
 import app.project.cualivy_capstone.R
 import app.project.cualivy_capstone.onboarding.OnboardingActivity
 

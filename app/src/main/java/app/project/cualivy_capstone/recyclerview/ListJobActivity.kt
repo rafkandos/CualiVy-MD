@@ -50,6 +50,7 @@ class ListJobActivity : AppCompatActivity() {
 
         binding.listJob.setOnClickListener {
             startActivity(Intent(this, DetailActivity::class.java))
+            finish()
         }
 
 

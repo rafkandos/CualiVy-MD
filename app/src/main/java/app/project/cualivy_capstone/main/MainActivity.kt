@@ -1,35 +1,24 @@
-package app.project.cualivy_capstone
-
+package app.project.cualivy_capstone.main
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import app.project.cualivy_capstone.ViewModelFactory
 import app.project.cualivy_capstone.databinding.ActivityMainBinding
-import app.project.cualivy_capstone.login.LoginActivity
 import app.project.cualivy_capstone.preference.PreferenceManager
-import app.project.cualivy_capstone.preference.UserPreference
 import app.project.cualivy_capstone.preview.CameraPreviewActivity
 import app.project.cualivy_capstone.preview.GalleryPreviewActivity
-
-
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
@@ -140,25 +129,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startCamera()
-            } else {
-                Toast.makeText(
-                    this,
-                    "Camera permission denied. Cannot access camera.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<out String>,
+//        grantResults: IntArray
+//    ) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//
+//        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+//            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                startCamera()
+//            } else {
+//                Toast.makeText(
+//                    this,
+//                    "Camera permission denied. Cannot access camera.",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+//        }
+//    }
 
     companion object {
         private const val GALLERY_REQUEST_CODE = 100

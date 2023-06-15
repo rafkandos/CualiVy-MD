@@ -30,6 +30,25 @@ class PreferenceManager private constructor(context: Context) {
         emit(Login(status, message, data, totalData))
     }
 
+//    fun getToken(): Token? {
+//        val token = Companion.sharedPreferences.getString(KEY_TOKEN, null)
+//        return Companion.gson.fromJson(token, Token::class.java)
+////            return sharedPreferences.getString(KEY_TOKEN, null)
+//    }
+
+
+    fun saveToken(value: Token) {
+        val editor = sharedPreferences.edit()
+        editor.putString(KEY_TOKEN, value.token)
+        editor.apply()
+    }
+
+    fun getToken(): Token {
+        return Token(
+            token = sharedPreferences.getString(KEY_TOKEN, "") ?: ""
+        )
+    }
+
     fun saveUser(user: Login) {
         sharedPreferences.edit().apply {
             putInt(STATUS_KEY, user.status)
@@ -45,15 +64,12 @@ class PreferenceManager private constructor(context: Context) {
         }.apply()
     }
 
-    fun saveToken(token: String) {
-        sharedPreferences.edit().apply {
-            putString(KEY_TOKEN, token)
-        }.apply()
+    fun logOut() {
+        val editor = sharedPreferences.edit()
+        editor.clear().apply()
     }
 
-    fun getToken(): String? {
-        return sharedPreferences.getString(KEY_TOKEN, null)
-    }
+
 
     companion object {
         private const val PREF_NAME = "app.project.cualivy_capstone.preference"
@@ -87,6 +103,7 @@ class PreferenceManager private constructor(context: Context) {
                 putString(KEY_BASE64_IMAGE, base64Image)
             }.apply()
         }
+
 
         fun getBase64Image(context: Context): String? {
             sharedPreferences =
@@ -152,5 +169,12 @@ class PreferenceManager private constructor(context: Context) {
                 putString(KEY_LINK, linkJson)
             }.apply()
         }
+//        fun saveToken(token: Token) {
+//            sharedPreferences.edit().apply {
+//                putString(KEY_TOKEN, token.token)
+//            }.apply()
+//        }
+
+
     }
 }

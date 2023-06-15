@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Cualivy</string>
     <string name="scan_your_cv">Submit Your CV</string>
-    <string name="copyright">Copyright @2023</string>
+    <string name="copyright">v0.01</string>
     <string name="gallery">Choose From Gallery</string>
     <string name="Scan">Camera</string>
     <string name="intro">Find your job with upload or scan your resume.</string>
