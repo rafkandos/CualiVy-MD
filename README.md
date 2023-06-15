@@ -42,7 +42,7 @@ com.loopj.android:android-async-http:1.4.10
 com.github.bumptech.glide:glide:4.15.1
 com.github.bumptech.glide:compiler:4.12.0
 
-# Fitur
+# Features
 -Splash Screen
 -Onboarding
 -Main Page
