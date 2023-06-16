@@ -47,4 +47,5 @@
     <string name="wait">Wait, we will process your CV</string>
     <string name="apply">Apply Now</string>
     <string name="setting">Setting</string>
+    <string name="additional_information">Additional Information</string>
 </resources>
